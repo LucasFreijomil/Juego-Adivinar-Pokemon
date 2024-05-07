@@ -70,7 +70,7 @@ export const Home = () => {
   useEffect(() => {
     fetchPokemon();
   }, []);
-
+ 
   return (
     <div className="min-h-[100vh] w-full flex flex-col gap-[100px] justify-center items-center align-middle bg-[url('https://wallpaperset.com/w/full/3/4/1/519411.jpg')]">
       <div className="flex flex-col">
