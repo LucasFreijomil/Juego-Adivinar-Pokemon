@@ -33,8 +33,10 @@ export const Home = () => {
   };
 
   const guessPokemon = (e: any) => {
+    let regex = /\s+/g;
+
     if ((e.key && e.key == "Enter") || e.target.value == "guessButton") {
-      if (input === currentPokemon.name) {
+      if (input.toLowerCase().replace(regex, "") == currentPokemon.name) {
         alert("Adivinaste!");
         setGuessStatus(true);
         setInput("");
@@ -44,6 +46,11 @@ export const Home = () => {
       }
     }
   };
+
+  const restartGame = () => {
+    fetchPokemon();
+    setGuessStatus(false)
+  }
 
   useEffect(() => {
     fetchPokemon();
@@ -55,9 +62,9 @@ export const Home = () => {
 
   return (
     <div className="min-h-[100vh] w-full flex flex-col gap-[100px] justify-center items-center align-middle bg-[url('https://wallpaperset.com/w/full/3/4/1/519411.jpg')]">
-      <span className="nes-text mb-[-100px] text-white text-[30px]">
+      {!guessStatus && <span className="nes-text mb-[-100px] text-white text-[30px]">
         Quién es este Pokemon?
-      </span>
+      </span>}
       {currentPokemon.name !== "" && (
         <img
           className={
@@ -71,29 +78,35 @@ export const Home = () => {
       )}
       {guessStatus && (
         <div>
-          {/* <div className="text-center nes-text mt-[-150px] mb-[50px] text-[25px]">
+          <div className="text-center nes-text mt-[-150px] mb-[50px] text-white text-[25px]">
             Muy bien! Descubriste a {currentPokemon.name}!
           </div>
-          <Confetti numberOfPieces={250} gravity={2.1} recycle={false} /> */}
+          <Confetti numberOfPieces={250} gravity={2.1} recycle={false} />
         </div>
       )}
-      <div className="flex mt-[-100px]">
-        <input
-          type="text"
-          className="nes-input max-w-[500px] outline-none border-solid border-5"
-          onChange={handleInputChange}
-          onKeyDown={guessPokemon}
-          value={input}
-        />
-        <button
-          onClick={guessPokemon}
-          value="guessButton"
-          type="button"
-          className="nes-btn is-primary"
-        >
-          adivinar
-        </button>
-      </div>
+      {!guessStatus ? (
+        <div className="flex mt-[-100px]">
+          <input
+            type="text"
+            className="nes-input max-w-[500px] outline-none border-solid border-5"
+            onChange={handleInputChange}
+            onKeyDown={guessPokemon}
+            value={input}
+          />
+          <button
+            onClick={guessPokemon}
+            value="guessButton"
+            type="button"
+            className="nes-btn is-primary"
+          >
+            adivinar
+          </button>
+        </div>
+      ) : (
+        <div>
+          <button className=" nes-btn" onClick={restartGame}>Volver a jugar</button>
+        </div>
+      )}
     </div>
   );
 };
