@@ -86,6 +86,10 @@ export const Home = () => {
     }
   }, []);
 
+  useEffect(() => {
+    console.log(currentPokemon);
+  }, [currentPokemon]);
+
   return (
     <div className=" min-h-[100vh] flex flex-col gap-[100px] items-center bg-center bg-[url('https://wallpaperset.com/w/full/3/4/1/519411.jpg')]">
       <div className="flex flex-col mt-[30px] sm:mt-[70px]">
@@ -132,7 +136,7 @@ export const Home = () => {
           alt="PokemonIMG"
         />
       )}
-
+      
       {!guessStatus ? (
         <div className="flex w-[300px] sm:w-[500px] mt-[-80px] mb-[70px]">
           <input
