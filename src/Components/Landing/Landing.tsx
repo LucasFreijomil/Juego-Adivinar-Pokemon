@@ -7,13 +7,13 @@ export const Landing = () => {
   };
 
   return (
-    <div className="min-h-[100vh] w-full flex flex-col justify-center items-center align-middle bg-[url('https://images6.alphacoders.com/328/thumb-1920-328013.jpg')]">
-      <div className=" relative">
+    <div className="min-h-[100vh] w-full flex flex-col justify-center items-center align-middle bg-center bg-[url('https://images6.alphacoders.com/328/thumb-1920-328013.jpg')]">
+      <div className="relative">
         <Link to="/home">
           <button
             onClick={initStorage}
             type="button"
-            className="nes-btn p-[35px] text-[25px] duration-300 inset-0"
+            className="nes-btn p-[25px] text-[15px] duration-300 inset-0 sm:text-[25px] sm:p-[35px]"
           >
             Que empliece la fiesta!
           </button>

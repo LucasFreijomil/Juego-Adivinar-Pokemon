@@ -12,6 +12,9 @@ export const Home = () => {
   const [input, setInput] = useState("");
   const [guessStatus, setGuessStatus] = useState(false);
 
+  const [errors, setErrors] = useState(0);
+  const [hits, setHits] = useState(0);
+
   const currentHits: any = localStorage.getItem("Aciertos");
   const currentErrors: any = localStorage.getItem("Errores");
 
@@ -46,12 +49,13 @@ export const Home = () => {
         setGuessStatus(true);
         setInput("");
         localStorage.setItem("Aciertos", parsedHits + 1);
+        setHits(parsedHits + 1);
       } else {
         alert("Inténtalo otra vez!");
         setInput("");
-        fetchPokemon();
         setGuessStatus(false);
         localStorage.setItem("Errores", parsedErrors + 1);
+        setErrors(parsedErrors + 1);
       }
     }
   };
@@ -64,58 +68,76 @@ export const Home = () => {
   const resetScore = () => {
     localStorage.setItem("Aciertos", "" + 0);
     localStorage.setItem("Errores", "" + 0);
-    window.location.reload();
-  }
+    setErrors(0);
+    setHits(0);
+  };
 
   useEffect(() => {
     fetchPokemon();
+    if (localStorage.getItem("Aciertos") === null) {
+      localStorage.setItem("Aciertos", "" + 0);
+    } else {
+      setHits(parsedHits);
+    }
+    if (localStorage.getItem("Errores") === null) {
+      localStorage.setItem("Errores", "" + 0);
+    } else {
+      setErrors(parsedErrors);
+    }
   }, []);
- 
+
   return (
-    <div className="min-h-[100vh] w-full flex flex-col gap-[100px] justify-center items-center align-middle bg-[url('https://wallpaperset.com/w/full/3/4/1/519411.jpg')]">
-      <div className="flex flex-col">
-        <div className="flex mt-[-70px] gap-1 ">
-          <div className="nes-container is-dark with-title is-centered">
-            <p className="title bg-transparent">Aciertos</p>
-            <p className="text-green-500">{parsedHits}</p>
+    <div className=" min-h-[100vh] flex flex-col gap-[100px] items-center bg-center bg-[url('https://wallpaperset.com/w/full/3/4/1/519411.jpg')]">
+      <div className="flex flex-col mt-[30px] sm:mt-[70px]">
+        <div className="flex gap-1 ">
+          <div className="nes-container w-[140px] sm:w-[250px] is-dark with-title is-centered">
+            <p className=" text-[10px] sm:text-[15px] sm:mb-[5px] sm: ml-[-5px]">
+              Aciertos
+            </p>
+            <p className="text-green-500">{hits}</p>
           </div>
-          <div className="nes-container is-dark with-title is-centered">
-            <p className="title">Errores</p>
-            <p className="text-red-500">{parsedErrors}</p>
+          <div className="nes-container w-[140px]  sm:w-[250px] is-dark with-title is-centered">
+            <p className="text-[10px] sm:text-[15px] sm:mb-[5px]">Errores</p>
+            <p className="text-red-500">{errors}</p>
           </div>
         </div>
-        <button onClick={resetScore} className="nes-btn is-error duration-300">Reiniciar Puntaje</button>
+        <button
+          onClick={resetScore}
+          className="nes-btn w-[290px] sm:w-[512px] h-[50px] text-[12px] sm:text-[17px] is-error duration-300"
+        >
+          Reiniciar Puntaje
+        </button>
       </div>
-      {!guessStatus && (
-        <span className="nes-text mb-[-100px] text-white text-[30px]">
+      {!guessStatus ? (
+        <span className="nes-text bg-zinc-800 mt-[-70px] sm:mt-[-30px] mb-[-50px] text-white text-[13px] sm:text-[25px]">
           Quién es este Pokemon?
         </span>
+      ) : (
+        <div className="mb-[-100px] mt-[-70px] sm:mt-[-30px]">
+          <div className="text-center nes-text bg-green-900 text-white text-[13px] mx-[25px] sm:text-[25px]">
+            Muy bien! Descubriste a {currentPokemon.name}!
+          </div>
+          <Confetti numberOfPieces={250} gravity={2.1} recycle={false} />
+        </div>
       )}
       {currentPokemon.name !== "" && (
         <img
           className={
             guessStatus
-              ? "size-[500px]"
-              : "filter saturate-100 brightness-0 size-[500px]"
+              ? "size-[300px] sm:size-[400px]"
+              : "filter saturate-100 brightness-0 size-[300px] sm:size-[400px]"
           }
           src={currentPokemon.image}
           draggable="false"
           alt="PokemonIMG"
         />
       )}
-      {guessStatus && (
-        <div className="mb-[-100px]">
-          <Confetti numberOfPieces={250} gravity={2.1} recycle={false} />
-          <div className="text-center nes-text mt-[-120px] mb-[-100px] text-white text-[25px]">
-            Muy bien! Descubriste a {currentPokemon.name}!
-          </div>
-        </div>
-      )}
+
       {!guessStatus ? (
-        <div className="flex mt-[-100px]">
+        <div className="flex w-[300px] sm:w-[500px] mt-[-80px] mb-[70px]">
           <input
             type="text"
-            className="nes-input max-w-[500px] outline-none border-solid border-5"
+            className="nes-input max-w-[500px] h-[40px] sm:h-[50px] outline-none border-solid border-5"
             onChange={handleInputChange}
             onKeyDown={guessPokemon}
             value={input}
@@ -124,7 +146,7 @@ export const Home = () => {
             onClick={guessPokemon}
             value="guessButton"
             type="button"
-            className="nes-btn is-primary"
+            className="nes-btn h-[40px] sm:text-[20px] sm:h-[50px] text-[12px] is-primary"
           >
             adivinar
           </button>
