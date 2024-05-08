@@ -141,9 +141,10 @@ export const Home = () => {
         <div className="flex w-[300px] sm:w-[500px] mt-[-80px] mb-[70px]">
           <input
             type="text"
-            className="nes-input max-w-[500px] h-[40px] sm:h-[50px] outline-none border-solid border-5"
+            className="nes-input max-w-[500px] h-[40px] sm:h-[50px] text-[10px] outline-none border-solid border-5"
             onChange={handleInputChange}
             onKeyDown={guessPokemon}
+            placeholder="Nombre..."
             value={input}
           />
           <button
